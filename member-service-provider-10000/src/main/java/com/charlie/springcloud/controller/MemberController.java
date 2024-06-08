@@ -1,0 +1,50 @@
+package com.charlie.springcloud.controller;
+
+import com.charlie.springcloud.entity.Member;
+import com.charlie.springcloud.entity.Result;
+import com.charlie.springcloud.service.MemberService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+@Slf4j
+@RestController
+public class MemberController {
+
+    // 装配MemberService
+    @Resource
+    private MemberService memberService;
+
+    /**
+     * 添加方法/接口
+     * 1. 如果前端是以json格式发送数据，那么需要使用参数注解 @RequestBody 才能将数据封装到对应的bean，
+     *      同时保证http的请求头的 content-type 是对应的 application/json
+     * 2. 如果前端是以 表单 形式提交的，则不需要注解 @RequestBody 才能封装，
+     *      对应的 content-type 为 application/x-www-form-urlencoded
+     */
+    @PostMapping("/member/save")
+    public Result save(Member member) {
+        int affected = memberService.save(member);
+        if (affected > 0) {
+            return Result.success("添加会员成功", affected);
+        }
+        return Result.error("401", "添加会员失败");
+    }
+
+    /**
+     * 查询的方法/接口
+     */
+    @GetMapping("/member/get/{id}")
+    public Result getMemberById(@PathVariable(name = "id") Long id) {
+        Member member = memberService.queryMemberById(id);
+        if (member != null) {
+            return Result.success("查询成功", member);
+        }
+        return Result.error("402", "ID=" + id + "的会员不存在");
+    }
+
+}
