@@ -4,10 +4,7 @@ import com.charlie.springcloud.entity.Member;
 import com.charlie.springcloud.entity.Result;
 import com.charlie.springcloud.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -25,9 +22,12 @@ public class MemberController {
      *      同时保证http的请求头的 content-type 是对应的 application/json
      * 2. 如果前端是以 表单 形式提交的，则不需要注解 @RequestBody 才能封装，
      *      对应的 content-type 为 application/x-www-form-urlencoded
+     * 3. 注意：restTemplate.postForObject方法底层是将 对象(member) 以 json格式 发出的请求，
+     *      因此，服务提供方(service-provider)的方法/接口，参数需要使用 @RequestBody 注解！
      */
     @PostMapping("/member/save")
-    public Result save(Member member) {
+    public Result save(@RequestBody Member member) {
+        log.info("service-provider member={}", member);
         int affected = memberService.save(member);
         if (affected > 0) {
             return Result.success("添加会员成功", affected);

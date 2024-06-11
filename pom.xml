@@ -8,6 +8,7 @@
     <!--列出了父项目/过程聚合管理地字模块/项目-->
     <modules>
         <module>member-service-provider-10000</module>
+        <module>member-service-consumer-80</module>
     </modules>
     <version>1.0-SNAPSHOT</version>
     <name>e-commerce-center</name>
