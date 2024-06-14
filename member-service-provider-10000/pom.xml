@@ -55,6 +55,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
+
+        <!--引入e_commerce_center-common-api-->
+        <dependency>
+            <groupId>com.charlie.springcloud</groupId>
+            <artifactId>e_commerce_center-common-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -84,3 +84,5 @@ public class MemberController {
 
 > 1. 在进行SpringBoot应用程序测试时，引入的JUnit是`org.junit.jupiter.api.Test`
 > 2. 在运行程序时，一定要确保你的`XxxMapper.xml`文件被自动放到的`target`目录的`classes`指定目录
+
+### 创建共用模块
