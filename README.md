@@ -86,3 +86,21 @@ public class MemberController {
 > 2. 在运行程序时，一定要确保你的`XxxMapper.xml`文件被自动放到的`target`目录的`classes`指定目录
 
 ### 创建共用模块
+
+## Eureka
+
+- SpringCloud组件选型
+  - ![SpringCloud组件选型](img.png)
+- 引出`Eureka`
+  - 在企业级项目中，服务消费访问请求会存在高并发。会员中心提供服务往往是一个集群，也就是说会有多个会员中心提供服务微服务模块
+  - 就存在一个问题就是**服务消费方，怎么去发现可以使用的服务**
+  - 当服务消费方，发现了可以使用的服务后(可能是多个，又存在一个问题就是**到底调用A服务，还是B服务的问题**，这就引出了服务注册和负载均衡
+  - ![引入Eureka项目架构刨析](img_1.png)
+- Eureka包含两个组件∶`EurekaServer`和`EurekaClient`
+  - `Eureka Server`提供**注册服务**, 各个微服务节点通过配置启动后，会在EurekaServer中进行注册，这样EurekaServer中的**服务注册表中将会存储所有可用服务节点的信息**，服务节点的信息可以在界面中直观看到。
+  - `EurekaClient`通过注册中心进行访问, 是一个Java客户端，用于简化EurekaServer的交互，客户端同时也具备一个内置的、使用轮询(round-robin) 负载算法的负载均衡器。
+    在应用启动后，将会向EurekaServer发送心跳(默认周期为30秒)。如果EurekaServer在多个心跳周期内没有接收到某个节点的心跳，EurekaServer将会从服务注册表中把这个服务节点移除(默认90秒)
+
+### 架构示意图
+
+- ![Service Consumer/Provider/Eureka维护机制](img_2.png)

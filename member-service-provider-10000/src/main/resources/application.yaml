@@ -12,3 +12,10 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*.xml  # 执行mapper.xml文件位置
   type-aliases-package: com.charlie.springcloud.entity  # 实例类所在包，通过类名就可以引用
+eureka: # 配置eureka-client
+  client:
+    register-with-eureka: true  # 将自己注册为eureka-server
+    fetch-registry: true  # 表示从eureka-server抓取注册信息，如果是单节点，可以不配置；如果是集群，必须配置为true，才能配合Ribbon复杂均衡
+    service-url:
+      # 表示将自己注册到哪个eureka-server
+      defaultZone: http://localhost:9001/eureka
