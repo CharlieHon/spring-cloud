@@ -104,3 +104,15 @@ public class MemberController {
 ### 架构示意图
 
 - ![Service Consumer/Provider/Eureka维护机制](img_2.png)
+
+### Eureka自我保护机制
+
+- 默认情况下EurekaClient定时向EurekaServer端发送心跳包
+- 如果Eureka在server端在一定时间内（默认90秒）没有收到EurekaClient发送心跳包，便会直接从服务注册列表中剔除该服务
+- 如果Eureka开启了自我保护模式/机制,那么在短时间（90秒中）内丢失了大量的服务实例心跳，这时候EurekaServer会开启自我保护机制，不会剔除该服务
+- 自我保护是属于**CAP里面的AP分支**，保证高可用和分区容错性
+- 架构哲学是**宁可同时保留所有微服务（健康的微服务和不健康的微服务都会保留）也不盲目注销任何健康的微服务**
+
+### 搭建Eureka集群-实现负载均衡&故障容错
+
+

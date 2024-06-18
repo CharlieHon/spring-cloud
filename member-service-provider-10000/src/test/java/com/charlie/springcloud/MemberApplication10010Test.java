@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 
 @SpringBootTest
 @Slf4j
-public class MemberApplicationTest {
+public class MemberApplication10010Test {
 
     @Resource
     private MemberDao memberDao;

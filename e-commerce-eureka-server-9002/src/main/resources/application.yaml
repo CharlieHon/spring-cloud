@@ -1,0 +1,14 @@
+server:
+  port: 9002
+# 配置eureka-server
+eureka:
+  instance:
+    hostname: eureka9002.com
+  client:
+    # 配置不向注册中心注册自己
+    register-with-eureka: false
+    # 表示自己就是注册中心，作用是维护注册服务实例，不需要去检索服务
+    fetch-registry: false
+    service-url:
+      # 这里注册到eureka9001 server
+      defaultZone: http://eureka9001.com:9001/eureka/

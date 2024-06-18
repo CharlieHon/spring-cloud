@@ -3,7 +3,7 @@ server:
 # 配置eureka-server
 eureka:
   instance:
-    hostname: localhost # 服务实例名
+    hostname: eureka9001.com # 服务实例名
   client:
     # 配置不向注册中心注册自己
     register-with-eureka: false
@@ -11,4 +11,11 @@ eureka:
     fetch-registry: false
     service-url:
       # 设置与eureka server交换模块，查询服务和注册服务都需要依赖这个地址
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      # 相互注册，这里应该注册到eureka server9002
+      defaultZone: http://eureka9002.com:9002/eureka
+#  server:
+#    # 启动Eureka自我保护机制
+#    enable-self-preservation: false
+#    # 设置超时时间为2秒，在2秒内搜不到心跳包，就认为超时，默认时间60s
+#    eviction-interval-timer-in-ms: 2000

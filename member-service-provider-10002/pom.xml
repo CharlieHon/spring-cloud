@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.charlie.springcloud</groupId>
+        <artifactId>e-commerce-center</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>member-service-provider-10002</artifactId>
+    <packaging>war</packaging>
+    <name>member-service-provider-10002</name>
+    <url>http://maven.apache.org</url>
+
+    <!--引入相关依赖-->
+    <dependencies>
+        <!--引入eureka-client场景启动器starter-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <!--引入web-starter，使用版本仲裁(从父项目继承来)-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--actuator是springboot程序的监控系统，可以实现系统的健康检测
+        可以通过 http://localhost:10000/actuator 看到相关的连接和信息
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!--引入mybatis-starter整合到springboot-->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
+        <!--引入druid-starter-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <!--这里需要指定版本，因为父项目没有-->
+            <version>1.1.17</version>
+        </dependency>
+        <!--引入mysql，使用版本仲裁-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!--引入spring-boot-starter-jdbc-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <!--引入lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!--引入test-starter-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <!--引入e_commerce_center-common-api-->
+        <dependency>
+            <groupId>com.charlie.springcloud</groupId>
+            <artifactId>e_commerce_center-common-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+</project>

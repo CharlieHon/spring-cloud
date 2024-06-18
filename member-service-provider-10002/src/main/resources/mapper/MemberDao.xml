@@ -1,0 +1,21 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.charlie.springcloud.dao.MemberDao">
+    <!--配置实现queryMemberById
+    1. 这里可以使用 resultType="Member"
+    2. 也可以使用 resultMap="自定义的resultMap"
+    -->
+    <select id="queryMemberById" parameterType="Long" resultType="Member">
+        SELECT * FROM `member` WHERE `id`=#{id};
+    </select>
+
+    <!--配置实现save
+    如下指定自增长字段
+    useGeneratedKeys="true"表示MyBatis将使用数据库自动生成的键值
+    keyProperty="id"指定了插入操作后，自动生成的主键值将被赋给对象的id属性
+    -->
+    <insert id="save" parameterType="Member" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `member`(`name`, `pwd`, `mobile`, `email`, `gender`)
+        VALUES(#{name}, MD5(#{pwd}), #{mobile}, #{email}, #{gender});
+    </insert>
+</mapper>
