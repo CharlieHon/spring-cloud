@@ -42,7 +42,7 @@ public class MemberController {
     public Result getMemberById(@PathVariable(name = "id") Long id) {
         Member member = memberService.queryMemberById(id);
         if (member != null) {
-            return Result.success("查询成功", member);
+            return Result.success("查询会员成功 member-service-provider-10010", member);
         }
         return Result.error("402", "ID=" + id + "的会员不存在");
     }

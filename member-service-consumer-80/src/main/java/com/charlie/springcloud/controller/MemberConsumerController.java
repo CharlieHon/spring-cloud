@@ -16,7 +16,15 @@ import javax.annotation.Resource;
 public class MemberConsumerController {
 
     // 定义 member_service_provider 这是一个基础url地址
-    public static final String MEMBER_SERVICE_PROVIDER = "http://localhost:10010";
+    /**
+     * 1. MEMBER-SERVICE-PROVIDER 服务提供方[集群]，注册到Eureka Server的别名
+     * 2. 也就是服务提供方[集群]对外暴露的名称为 MEMBER-SERVICE-PROVIDER
+     * 3. MEMBER-SERVICE-PROVIDER 目前有两个 Availability Zones member-service-provider:10010 和
+     *      member-service-provider:10002
+     *      还需要增加一个注解 @LoadBalanced 赋予 RestTemplate 负载均衡的能力(在配置它的CustomizationBean上加)，
+     *      也就是说会根据负载均衡算法选择某个服务去访问。默认是轮询算法，当然也可以自己配置负载均衡算法。
+     */
+    public static final String MEMBER_SERVICE_PROVIDER_URL = "http://MEMBER-SERVICE-PROVIDER";
 
     // 装配RestTemplate
     @Resource
@@ -33,13 +41,13 @@ public class MemberConsumerController {
          * 注意：restTemplate.postForObject方法底层是将 对象(member) 以 json格式 发出的请求，
          *  因此，服务提供方(service-provider)的方法/接口，参数需要使用 @RequestBody 注解！
          */
-        return restTemplate.postForObject(MEMBER_SERVICE_PROVIDER + "/member/save", member, Result.class);
+        return restTemplate.postForObject(MEMBER_SERVICE_PROVIDER_URL + "/member/save", member, Result.class);
     }
 
     // 方法/接口，根据id调用服务接口，返回member对象信息
     @GetMapping("/member/consumer/get/{id}")
     public Result<Member> getMemberById(@PathVariable(name = "id") Long idx) {
-        return restTemplate.getForObject(MEMBER_SERVICE_PROVIDER + "/member/get/" + idx, Result.class);
+        return restTemplate.getForObject(MEMBER_SERVICE_PROVIDER_URL + "/member/get/" + idx, Result.class);
     }
 
 }
