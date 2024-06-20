@@ -120,7 +120,7 @@ public class MemberController {
 - ![项目架构](img_3.png)
 - ![服务发现](img_4.png)
 
-1. 修改`Controller`装配`DIscoveryClient`
+1. 修改`Controller`装配`DiscoveryClient`
 2. 修改主启动类，增加注解`@EnableDiscoveryClient`，启动服务发现
 
 ```
@@ -143,3 +143,7 @@ public Object discovery() {
     return discoveryClient;
 }
 ```
+
+## Ribbon
+
+- Ribbon就是负载均衡+RestTemplate调用
