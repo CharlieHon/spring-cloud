@@ -3,6 +3,8 @@ package com.charlie.springcloud.controller;
 import com.charlie.springcloud.entity.Member;
 import com.charlie.springcloud.entity.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -29,6 +32,24 @@ public class MemberConsumerController {
     // 装配RestTemplate
     @Resource
     private RestTemplate restTemplate;
+
+    // 装配DiscoveryClient
+    @Resource
+    private DiscoveryClient discoveryClient;
+
+    @GetMapping("/member/consumer/discovery")
+    public Object discovery() {
+        List<String> services = discoveryClient.getServices();
+        for (String service : services) {
+            log.info("服务名={}", service);
+            // 通过服务名获取实例对象的集合
+            List<ServiceInstance> instances = discoveryClient.getInstances(service);
+            for (ServiceInstance instance : instances) {
+                log.info("id={},host={},uri={}", instance.getServiceId(), instance.getHost(), instance.getUri());
+            }
+        }
+        return discoveryClient;
+    }
 
     // 方法/接口，添加member对象到数据库
     @PostMapping("/member/consumer/save")

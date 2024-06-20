@@ -115,4 +115,31 @@ public class MemberController {
 
 ### 搭建Eureka集群-实现负载均衡&故障容错
 
+### DiscoveryClient
 
+- ![项目架构](img_3.png)
+- ![服务发现](img_4.png)
+
+1. 修改`Controller`装配`DIscoveryClient`
+2. 修改主启动类，增加注解`@EnableDiscoveryClient`，启动服务发现
+
+```
+// 装配DiscoveryClient
+// 引入的是接口 org.springframework.cloud.client.discovery.DiscoveryClient;
+@Resource
+private DiscoveryClient discoveryClient;
+
+@GetMapping("/member/consumer/discovery")
+public Object discovery() {
+    List<String> services = discoveryClient.getServices();
+    for (String service : services) {
+        log.info("服务名={}", service);
+        // 通过服务名获取实例对象的集合
+        List<ServiceInstance> instances = discoveryClient.getInstances(service);
+        for (ServiceInstance instance : instances) {
+            log.info("id={},host={},uri={}", instance.getServiceId(), instance.getHost(), instance.getUri());
+        }
+    }
+    return discoveryClient;
+}
+```
