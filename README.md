@@ -147,3 +147,36 @@ public Object discovery() {
 ## Ribbon
 
 - Ribbon就是负载均衡+RestTemplate调用
+
+### LB(Load Balance)
+
+1. 集中式LB
+   - 即在服务的消费方和提供方之间使用独立的LB设施（可以是硬件如F5，也可以是软件如Nginx），由该设施负责把访问请求通过某种策略转发至服务的提供方
+   - ![i集中式LB](img_5.png)
+2. 进程内LB
+   - 将LB逻辑集成到消费方，消费方从服务注册中心获知有哪些服务地址可用，然后在这些地址中选择出一个合适的服务地址。
+   - `Ribbon`就属于进程内LB，它只是一个类库，集成于消费方进程，消费方通过它来获取到服务提供方的地址
+   - ![进程内LB](img_6.png)
+
+### Ribbon原理
+
+- ![Ribbon架构图和机制](img_7.png)
+- ![常见负载均衡算法](img_8.png)
+1. 先选择EurekaServer，优先选择在同一个区域内负载较少的server
+2. 再根据用户指定的策略，再从server获取到的服务注册列表中选择一个地址
+3. Ribbon提供了多种策略：比如轮询、随机和根据响应时间加权
+
+## OpenFeign
+
+1. `OpenFeign`是个声明式WebService客户端
+2. **使用方法是定义一个服务接口然后在上面添加注解**
+3. OpenFeign也支持可拔插式的编码器和解码器
+4. SpringCloud对OpenFeign进行了封装使其支持了SpringMVC标准注解和HttpMessageConverters
+5. OpenFeign可以与Eureka和Ribbon组合使用以支持负载均衡
+- ![Eureka+OpenFeign](img_9.png)
+
+### 服务调用
+
+### 日志配置
+
+### 调用超时
