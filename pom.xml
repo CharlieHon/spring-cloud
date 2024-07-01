@@ -5,7 +5,7 @@
     <artifactId>e-commerce-center</artifactId>
     <!--表明是一个父工程，聚合管理其它模块-->
     <packaging>pom</packaging>
-    <!--列出了父项目/过程聚合管理地字模块/项目-->
+    <!--列出了父项目/过程聚合管理的子模块/项目-->
     <modules>
         <module>member-service-provider-10000</module>
         <module>member-service-consumer-80</module>
@@ -14,6 +14,7 @@
         <module>e-commerce-eureka-server-9002</module>
         <module>member-service-provider-10002</module>
         <module>e-commerce-consumer-openfeign-80</module>
+        <module>e-commerce-gateway-20000</module>
     </modules>
     <version>1.0-SNAPSHOT</version>
     <name>e-commerce-center</name>

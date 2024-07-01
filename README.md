@@ -180,3 +180,31 @@ public Object discovery() {
 ### 日志配置
 
 ### 调用超时
+
+## Gateway
+
+| ![没有网关服务的问题分析](img_10.png)   |
+|------------------------------|
+| ![使用网关服务架构重构](img_11.png)    |
+| ![分布式微服务架构](springcloud.png) |
+
+### Gateway介绍
+
+1. Gateway是在Spring生态系统之上构建的**API网关服务**，基于Spring，SpringBoot和ProjectReactor等技术
+2. Gateway旨在提供一种简单而有效的方式来对API进行路由，以及提供一些强大的过滤器功能，如熔断、限流、重试等
+3. GateWay核心功能：鉴权、流量控制、熔断、日志监控和反向代理
+4. SpringCloud Gateway作为SpringCloud生态系统中的网关，目标是替代Zuul。
+5. GateWay基于SpringWebFlux框架实现，WebFlux框架底层则使用了高性能的Reactor模式通信框架Netty，提升了网关性能
+6. ![Gateway特性](img_12.png)
+7. ![Gateway核心组件](img_13.png)
+    1) web请求**通过一些匹配条件，定位到真正的服务节点/微服务模块，在这个转发过程的前后，进行一些精细化控制**
+   2) `predicate`：就是匹配条件
+   3) `filter`：可以理解位是网关的过滤机制。有了predicate和filter，再加上目标URL就可以实现一个具体的路由
+8. ![Gateway核心组件介绍](img_14.png)
+9. ![Gateway工作机制](img_15.png)
+   1) 客户端向Spring Cloud Gateway发出请求。然后在`Gateway Handler Mapping`中找到与请求相匹配的路由，将其发送到`Gateway Web Handler`
+   2) `Handler`再通过指定的**过滤器链**来将请求发送到我们实际的服务执行业务逻辑，然后返回
+   3) 过滤器之间用虚线分开是因为过滤器可能会在发送代理请求之前("pre")或之后("post")执行业务逻辑
+   4) Filter在"pre"类型的过滤器可以做**参数校验、权限校验、流量监控、日志输出、协议转换**等
+   5) 在"post"类型的过滤器中可以做**响应内容、响应头的修改，日志的输出，流量监控**等有着非常重要的作用
+   6) 一句话：**路由转发+执行过滤器链**
