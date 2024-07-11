@@ -208,3 +208,55 @@ public Object discovery() {
    4) Filter在"pre"类型的过滤器可以做**参数校验、权限校验、流量监控、日志输出、协议转换**等
    5) 在"post"类型的过滤器中可以做**响应内容、响应头的修改，日志的输出，流量监控**等有着非常重要的作用
    6) 一句话：**路由转发+执行过滤器链**
+
+### Predicate/断言
+
+> `Predicate`就是一组匹配规则，当请求匹配成功，就执行对应的Route，匹配失败，放弃处理/转发
+
+- Spring Cloud Gateway包括**许多内置的`Route Predicate`工厂**, 所有这些Predicate都与HTTP请求的不同属性匹配, 可以组合使用
+- Spring Cloud Gateway 创建 Route 对象时，使用RoutePredicateFactory 创建 Predicate对象，Predicate 对象可以赋值给Route。
+- 所有这些谓词**都匹配HTTP请求的不同属性**,多种谓词工厂可以**组合**
+
+```yaml
+server:
+  port: 20000
+spring:
+  application:
+    name: e-commerce-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          # Flag that enables DiscoveryClient gateway integration
+          # 启用了 DiscoveryClient 服务发现
+          enabled: true
+      routes: # 配置路由，可以配置多个路由 List<RouteDefinition> routes
+        - id: member_route01  # 路由id，自定义配置，要求唯一
+          # gateway最终访问的url=uri+Path
+          # 匹配后提供服务的路由地址也可以是外网如 http://baidu.com
+          # 比如：客户端/浏览器请求url：http://localhost:20000/member/get/1，其中localhost:20000用于找到网关服务
+          # 如果根据Path匹配成功，最终访问的url/转发url就是 url=http://localhost:10010/member/get/1
+          # 如果匹配失败，则由gateway返回404信息
+          # 这里配置固定的uri，在当前这种情况可以不使用eureka-server
+#          uri: http://localhost:10010
+          # 1. lb: 协议名，member-service-provider 注册到eureka server的服务名(小写)
+          # 2. 默认情况下，负载均衡算法是轮询
+          uri: lb://member-service-provider
+          predicates: # 断言可以有多种形式
+            - Path=/member/get/**
+#            - After=2024-01-18T22:16:08.000+08:00[Asia/Shanghai]
+#            - Before=2024-11-18T22:16:08.000+08:00[Asia/Shanghai]
+#            - Between=2024-01-18T22:16:08.000+08:00[Asia/Shanghai],2024-10-18T22:16:08.000+08:00[Asia/Shanghai]
+#            - Cookie=user, hsp
+#            - Header=X-Request-Id, hello
+#            - Host=**.hspedu.**
+#            - Method=POST, GET
+#            - Query=email, [\w-]+@([a-zA-Z]+\.)+[a-zA-Z]+
+#            - RemoteAddr=127.0.0.1
+```
+
+### Filter/过滤器
+
+1. 在对http请求断言匹配成功后，可以通过网关的过滤机制，对Http请求处理
+2. `Spring Cloud Gateway`内置了多种路由过滤器，他们都由GatewayFilter的工厂类来产生
+

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -40,8 +41,9 @@ public class MemberController {
      * 查询的方法/接口
      */
     @GetMapping("/member/get/{id}")
-    public Result getMemberById(@PathVariable(name = "id") Long id) {
+    public Result getMemberById(@PathVariable(name = "id") Long id, HttpServletRequest req) {
 
+        String color = req.getParameter("color");
         //// 模拟休眠5s
         //try {
         //    TimeUnit.SECONDS.sleep(5);
@@ -51,7 +53,7 @@ public class MemberController {
 
         Member member = memberService.queryMemberById(id);
         if (member != null) {
-            return Result.success("查询会员成功 member-service-provider-10010", member);
+            return Result.success("查询会员成功 member-service-provider-10010 " + color, member);
         }
         return Result.error("402", "ID=" + id + "的会员不存在");
     }

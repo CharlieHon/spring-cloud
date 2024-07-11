@@ -24,6 +24,18 @@ spring:
           uri: lb://member-service-provider
           predicates: # 断言可以有多种形式
             - Path=/member/get/**
+#            - After=2024-01-18T22:16:08.000+08:00[Asia/Shanghai]
+#            - Before=2024-11-18T22:16:08.000+08:00[Asia/Shanghai]
+#            - Between=2024-01-18T22:16:08.000+08:00[Asia/Shanghai],2024-10-18T22:16:08.000+08:00[Asia/Shanghai]
+#            - Cookie=user, hsp
+#            - Header=X-Request-Id, hello
+#            - Host=**.hspedu.**
+#            - Method=POST, GET
+#            - Query=email, [\w-]+@([a-zA-Z]+\.)+[a-zA-Z]+
+#            - RemoteAddr=127.0.0.1
+#          filters:
+#            - AddRequestParameter=color, blue
+#            - AddRequestParameter=address, TianJin
         - id: member_route02
 #          uri: http://localhost:10010
           uri: lb://member-service-provider
