@@ -43,7 +43,7 @@ public class MemberController {
     @GetMapping("/member/get/{id}")
     public Result getMemberById(@PathVariable(name = "id") Long id, HttpServletRequest req) {
 
-        String color = req.getParameter("color");
+        //String color = req.getParameter("color");
         //// 模拟休眠5s
         //try {
         //    TimeUnit.SECONDS.sleep(5);
@@ -53,7 +53,7 @@ public class MemberController {
 
         Member member = memberService.queryMemberById(id);
         if (member != null) {
-            return Result.success("查询会员成功 member-service-provider-10010 " + color, member);
+            return Result.success("查询会员成功 member-service-provider-10010 " /*+ color*/, member);
         }
         return Result.error("402", "ID=" + id + "的会员不存在");
     }
