@@ -11,6 +11,14 @@
 
     <!--引入相关依赖-->
     <dependencies>
+        <!--引入Sleuth+Zipkin依赖
+        1. 使用版本仲裁
+        2. starter-zipkin包含了sleuth
+        -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
         <!--引入eureka-client场景启动器starter-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

@@ -7,21 +7,23 @@
 ```mysql
 CREATE DATABASE IF NOT EXISTS e_commerce_center_db;
 USE e_commerce_center_db;
-CREATE TABLE `member` (
-	`id` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'id',
-	`name` VARCHAR(64) COMMENT '用户名',
-	`pwd` CHAR(32) COMMENT '密码',
-	`mobile` VARCHAR(20) COMMENT '手机号码',
-	`email` VARCHAR(64) COMMENT '邮箱',
-	`gender` TINYINT COMMENT '性别',
-	PRIMARY KEY (`id`)
+CREATE TABLE `member`
+(
+    `id`     BIGINT NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `name`   VARCHAR(64) COMMENT '用户名',
+    `pwd`    CHAR(32) COMMENT '密码',
+    `mobile` VARCHAR(20) COMMENT '手机号码',
+    `email`  VARCHAR(64) COMMENT '邮箱',
+    `gender` TINYINT COMMENT '性别',
+    PRIMARY KEY (`id`)
 );
 
-INSERT INTO `member` VALUES 
-	(NULL, 'charlie', MD5('123'), '123456789545', 'charlie@gmail.com', 1),
-	(NULL, 'snow', MD5('456'), '123568975520', 'snow@163.com', 0);
+INSERT INTO `member`
+VALUES (NULL, 'charlie', MD5('123'), '123456789545', 'charlie@gmail.com', 1),
+       (NULL, 'snow', MD5('456'), '123568975520', 'snow@163.com', 0);
 
-SELECT * FROM `member`;
+SELECT *
+FROM `member`;
 ```
 
 ### Dao
@@ -90,16 +92,20 @@ public class MemberController {
 ## Eureka
 
 - SpringCloud组件选型
-  - ![SpringCloud组件选型](img.png)
+    - ![SpringCloud组件选型](img.png)
 - 引出`Eureka`
-  - 在企业级项目中，服务消费访问请求会存在高并发。会员中心提供服务往往是一个集群，也就是说会有多个会员中心提供服务微服务模块
-  - 就存在一个问题就是**服务消费方，怎么去发现可以使用的服务**
-  - 当服务消费方，发现了可以使用的服务后(可能是多个，又存在一个问题就是**到底调用A服务，还是B服务的问题**，这就引出了服务注册和负载均衡
-  - ![引入Eureka项目架构刨析](img_1.png)
+    - 在企业级项目中，服务消费访问请求会存在高并发。会员中心提供服务往往是一个集群，也就是说会有多个会员中心提供服务微服务模块
+    - 就存在一个问题就是**服务消费方，怎么去发现可以使用的服务**
+    - 当服务消费方，发现了可以使用的服务后(可能是多个，又存在一个问题就是**到底调用A服务，还是B服务的问题**，这就引出了服务注册和负载均衡
+    - ![引入Eureka项目架构刨析](img_1.png)
 - Eureka包含两个组件∶`EurekaServer`和`EurekaClient`
-  - `Eureka Server`提供**注册服务**, 各个微服务节点通过配置启动后，会在EurekaServer中进行注册，这样EurekaServer中的**服务注册表中将会存储所有可用服务节点的信息**，服务节点的信息可以在界面中直观看到。
-  - `EurekaClient`通过注册中心进行访问, 是一个Java客户端，用于简化EurekaServer的交互，客户端同时也具备一个内置的、使用轮询(round-robin) 负载算法的负载均衡器。
-    在应用启动后，将会向EurekaServer发送心跳(默认周期为30秒)。如果EurekaServer在多个心跳周期内没有接收到某个节点的心跳，EurekaServer将会从服务注册表中把这个服务节点移除(默认90秒)
+    - `Eureka Server`提供**注册服务**, 各个微服务节点通过配置启动后，会在EurekaServer中进行注册，这样EurekaServer中的*
+      *服务注册表中将会存储所有可用服务节点的信息**，服务节点的信息可以在界面中直观看到。
+    - `EurekaClient`通过注册中心进行访问,
+      是一个Java客户端，用于简化EurekaServer的交互，客户端同时也具备一个内置的、使用轮询(round-robin) 负载算法的负载均衡器。
+      在应用启动后，将会向EurekaServer发送心跳(默认周期为30秒)
+      。如果EurekaServer在多个心跳周期内没有接收到某个节点的心跳，EurekaServer将会从服务注册表中把这个服务节点移除(
+      默认90秒)
 
 ### 架构示意图
 
@@ -151,17 +157,18 @@ public Object discovery() {
 ### LB(Load Balance)
 
 1. 集中式LB
-   - 即在服务的消费方和提供方之间使用独立的LB设施（可以是硬件如F5，也可以是软件如Nginx），由该设施负责把访问请求通过某种策略转发至服务的提供方
-   - ![i集中式LB](img_5.png)
+    - 即在服务的消费方和提供方之间使用独立的LB设施（可以是硬件如F5，也可以是软件如Nginx），由该设施负责把访问请求通过某种策略转发至服务的提供方
+    - ![i集中式LB](img_5.png)
 2. 进程内LB
-   - 将LB逻辑集成到消费方，消费方从服务注册中心获知有哪些服务地址可用，然后在这些地址中选择出一个合适的服务地址。
-   - `Ribbon`就属于进程内LB，它只是一个类库，集成于消费方进程，消费方通过它来获取到服务提供方的地址
-   - ![进程内LB](img_6.png)
+    - 将LB逻辑集成到消费方，消费方从服务注册中心获知有哪些服务地址可用，然后在这些地址中选择出一个合适的服务地址。
+    - `Ribbon`就属于进程内LB，它只是一个类库，集成于消费方进程，消费方通过它来获取到服务提供方的地址
+    - ![进程内LB](img_6.png)
 
 ### Ribbon原理
 
 - ![Ribbon架构图和机制](img_7.png)
 - ![常见负载均衡算法](img_8.png)
+
 1. 先选择EurekaServer，优先选择在同一个区域内负载较少的server
 2. 再根据用户指定的策略，再从server获取到的服务注册列表中选择一个地址
 3. Ribbon提供了多种策略：比如轮询、随机和根据响应时间加权
@@ -173,6 +180,7 @@ public Object discovery() {
 3. OpenFeign也支持可拔插式的编码器和解码器
 4. SpringCloud对OpenFeign进行了封装使其支持了SpringMVC标准注解和HttpMessageConverters
 5. OpenFeign可以与Eureka和Ribbon组合使用以支持负载均衡
+
 - ![Eureka+OpenFeign](img_9.png)
 
 ### 服务调用
@@ -198,16 +206,17 @@ public Object discovery() {
 6. ![Gateway特性](img_12.png)
 7. ![Gateway核心组件](img_13.png)
     1) web请求**通过一些匹配条件，定位到真正的服务节点/微服务模块，在这个转发过程的前后，进行一些精细化控制**
-   2) `predicate`：就是匹配条件
-   3) `filter`：可以理解位是网关的过滤机制。有了predicate和filter，再加上目标URL就可以实现一个具体的路由
+    2) `predicate`：就是匹配条件
+    3) `filter`：可以理解位是网关的过滤机制。有了predicate和filter，再加上目标URL就可以实现一个具体的路由
 8. ![Gateway核心组件介绍](img_14.png)
 9. ![Gateway工作机制](img_15.png)
-   1) 客户端向Spring Cloud Gateway发出请求。然后在`Gateway Handler Mapping`中找到与请求相匹配的路由，将其发送到`Gateway Web Handler`
-   2) `Handler`再通过指定的**过滤器链**来将请求发送到我们实际的服务执行业务逻辑，然后返回
-   3) 过滤器之间用虚线分开是因为过滤器可能会在发送代理请求之前("pre")或之后("post")执行业务逻辑
-   4) Filter在"pre"类型的过滤器可以做**参数校验、权限校验、流量监控、日志输出、协议转换**等
-   5) 在"post"类型的过滤器中可以做**响应内容、响应头的修改，日志的输出，流量监控**等有着非常重要的作用
-   6) 一句话：**路由转发+执行过滤器链**
+    1) 客户端向Spring Cloud Gateway发出请求。然后在`Gateway Handler Mapping`
+       中找到与请求相匹配的路由，将其发送到`Gateway Web Handler`
+    2) `Handler`再通过指定的**过滤器链**来将请求发送到我们实际的服务执行业务逻辑，然后返回
+    3) 过滤器之间用虚线分开是因为过滤器可能会在发送代理请求之前("pre")或之后("post")执行业务逻辑
+    4) Filter在"pre"类型的过滤器可以做**参数校验、权限校验、流量监控、日志输出、协议转换**等
+    5) 在"post"类型的过滤器中可以做**响应内容、响应头的修改，日志的输出，流量监控**等有着非常重要的作用
+    6) 一句话：**路由转发+执行过滤器链**
 
 ### Predicate/断言
 
@@ -238,7 +247,7 @@ spring:
           # 如果根据Path匹配成功，最终访问的url/转发url就是 url=http://localhost:10010/member/get/1
           # 如果匹配失败，则由gateway返回404信息
           # 这里配置固定的uri，在当前这种情况可以不使用eureka-server
-#          uri: http://localhost:10010
+          #          uri: http://localhost:10010
           # 1. lb: 协议名，member-service-provider 注册到eureka server的服务名(小写)
           # 2. 默认情况下，负载均衡算法是轮询
           uri: lb://member-service-provider
@@ -260,3 +269,15 @@ spring:
 1. 在对http请求断言匹配成功后，可以通过网关的过滤机制，对Http请求处理
 2. `Spring Cloud Gateway`内置了多种路由过滤器，他们都由GatewayFilter的工厂类来产生
 
+## Sleuth+Zipkin
+
+1. 在微服务框架中，一个由客户端发起的请求在后端系统中会经过多个不同的的服务节点调用, 来协同产生最后的请求结果，
+   每一个请求都会形成一条复杂的分布式服务调用链路
+2. 链路中的任何一环出现高延时或错误都会引起整个请求最后的失败, 因此**对整个服务的调用进行链路追踪和分析**就非常的重要
+3. ![Sleuth和Zipkin关系](img_16.png)
+4. `Sleuth`提供了一套完整的**服务跟踪**的解决方案并兼容`Zipkin`
+5. `Sleuth`做**链路追踪**,`Zipkin`做**数据搜集/存储/可视化**
+
+| ![微服务请求链路](img_17.png) | ![梳理](img_18.png) |
+|------------------------|-------------------|
+| ![Span](img_19.png)    | ![梳理](img_20.png) |
