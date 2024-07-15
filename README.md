@@ -281,3 +281,14 @@ spring:
 | ![微服务请求链路](img_17.png) | ![梳理](img_18.png) |
 |------------------------|-------------------|
 | ![Span](img_19.png)    | ![梳理](img_20.png) |
+
+## Nacos
+
+- `Nacos`是注册中心(替代Eureka)+配置中心(替代Config)
+- `Nacos`: Dynamic Naming and Configuration Service
+- `Nacos`架构理论基础，支持AP和CP，可以切换。CAP理论
+  - 一个分布式系统最多只能同时满足一致性(Consistency)、可用性(Availability)和分区容错性(Partition tolerance)三项中的两项
+  - 一致性：所有节点在同一时间的数据完全一致
+  - 可用性：服务在正常时间内一直可用
+  - 分区容错性：系统在遇到某个节点或者网络分区故障的时候，仍然能够对外满足可用性或一致性的服务
+- ![img_21.png](img_21.png)
