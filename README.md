@@ -287,8 +287,56 @@ spring:
 - `Nacos`是注册中心(替代Eureka)+配置中心(替代Config)
 - `Nacos`: Dynamic Naming and Configuration Service
 - `Nacos`架构理论基础，支持AP和CP，可以切换。CAP理论
-  - 一个分布式系统最多只能同时满足一致性(Consistency)、可用性(Availability)和分区容错性(Partition tolerance)三项中的两项
-  - 一致性：所有节点在同一时间的数据完全一致
-  - 可用性：服务在正常时间内一直可用
-  - 分区容错性：系统在遇到某个节点或者网络分区故障的时候，仍然能够对外满足可用性或一致性的服务
+    - 一个分布式系统最多只能同时满足一致性(Consistency)、可用性(Availability)和分区容错性(Partition tolerance)三项中的两项
+    - 一致性：所有节点在同一时间的数据完全一致
+    - 可用性：服务在正常时间内一直可用
+    - 分区容错性：系统在遇到某个节点或者网络分区故障的时候，仍然能够对外满足可用性或一致性的服务
 - ![img_21.png](img_21.png)
+
+### Nacos配置中心实例
+
+- [application.yaml](e-commerce-nacos-config-client5000/src/main/resources/application.yaml)
+  和[bootstrap.yaml](e-commerce-nacos-config-client5000/src/main/resources/bootstrap.yaml)结合会得到配置文件/资源的地址
+- 注意NacosServer的配置文件后缀是`yaml`
+- 必须先成功从`Nacos`中正确获取配置信息，否则微服务无法启动
+
+```java
+package com.charlie.springcloud.controller;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * @RefreshScope SpringCloud原生注解，实现了配置数据的自动刷新
+ */
+@RestController
+@RefreshScope
+public class NacosConfigClientController {
+
+    /**
+     * 1. client会拉取nacos server的 e-commerce-nacos-config-client-dev.yaml
+     * config:
+     *      ip: "122.22.22.22"
+     *      name: "快乐修勾"
+     * 2. @Value("${config.ip}") 会将 config.ip 赋值给 configIp;
+     * 3. 注解中的值，要根据配置来写
+     */
+    @Value("${config.ip}")
+    private String configIp;
+
+    @Value("${config.name}")
+    private String configName;
+
+    @GetMapping("/nacos/config/ip")
+    public String getConfigIp() {
+        return configIp;
+    }
+
+    @GetMapping("/nacos/config/name")
+    public String getConfigName() {
+        return configName;
+    }
+}
+```

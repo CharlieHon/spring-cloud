@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.charlie.springcloud</groupId>
+        <artifactId>e-commerce-center</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>e-commerce-nacos-config-client5000</artifactId>
+    <packaging>war</packaging>
+    <name>e-commerce-nacos-config-client5000</name>
+    <url>http://maven.apache.org</url>
+
+    <dependencies>
+        <!--加入新的依赖，nacos-config-starter场景启动器-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <!--引入alibaba-nacos-discovery-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <!--引入web-starter，使用版本仲裁(从父项目继承来)-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--actuator是springboot程序的监控系统，可以实现系统的健康检测
+        可以通过 http://localhost:10000/actuator 看到相关的连接和信息
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!--引入lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--引入e_commerce_center-common-api-->
+        <dependency>
+            <groupId>com.charlie.springcloud</groupId>
+            <artifactId>e_commerce_center-common-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+</project>
